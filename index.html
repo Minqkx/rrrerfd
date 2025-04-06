@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Дз Дмитро</title>
+    <style>
+        /* Загальні стилі для сайту */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0a0a0a;
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            font-size: 16px;
+            overflow: hidden;
+        }
+
+        /* Меню */
+        .menu {
+            width: 100%;
+            background-color: #222;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .menu a {
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #ff0000;
+            color: #000;
+        }
+
+        /* Текст для натискання */
+        .moving-text {
+            position: absolute;
+            font-size: 1.2rem;
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 1px;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.1s ease;
+            display: none; /* Початково прихований */
+        }
+
+        /* Лінії по краях екрану */
+        .edge-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid red;
+            pointer-events: none;
+        }
+
+        /* Реєстраційна форма */
+        .register-form {
+            background-color: #222;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 2px solid red;
+            width: 300px;
+            text-align: center;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #444;
+            background-color: #111;
+            color: #fff;
+        }
+
+        .register-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: red;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .register-form button:hover {
+            background-color: #ff3300;
+        }
+
+        /* Фото внизу */
+        .footer-image {
+            margin-top: 30px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .footer-image img {
+            width: 20%;
+            border-radius: 10px;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Меню -->
+    <div class="menu">
+        <a href="#">English</a>
+        <a href="#">Spanish</a>
+    </div>
+
+    <h1>Цейго короче забув де текст "Віталій Кличко"</h1>
+
+    <!-- Лінії по краях екрану -->
+    <div class="edge-lines"></div>
+
+    <!-- Форма реєстрації -->
+    <div class="register-form">
+        <h2>Реєстрація</h2>
+        <form id="registerForm">
+            <input type="text" placeholder="Ваше ім'я" required>
+            <input type="email" placeholder="Електронна пошта" required>
+            <input type="password" placeholder="Пароль" required>
+            <button type="submit">Зареєструватись</button>
+        </form>
+    </div>
+
+    <!-- Текст для натискання (спочатку прихований) -->
+    <div class="moving-text" id="movingText">
+        Натисніть тут для перевірки домашки
+    </div>
+
+    <!-- Фото внизу -->
+    <div class="footer-image">
+        <img src="https://th.bing.com/th/id/R.e38587a20c078377643ec1dcbaf07825?rik=mYjxyVi91Ns1lA&riu=http%3a%2f%2frisovach.ru%2fupload%2f2012%2f05%2fcomics_Fraj_orig_1335927095.jpg&ehk=nRYIpbzj8FhCncqtSyhPLJM7orbilfYf9EJtjSziSkU%3d&risl=&pid=ImgRaw&r=0" alt="Тривожне зображення">
+    </div>
+
+    <script>
+        const text = document.getElementById('movingText');
+        const form = document.getElementById('registerForm');
+        let isClicked = false;
+        let timeOutReached = false;
+
+        // Показуємо текст після натискання на кнопку
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Скасовуємо стандартну поведінку форми
+            text.style.display = 'block'; // Показуємо текст
+        });
+
+        // Функція для переміщення тексту при наведенні
+        function moveText() {
+            if (isClicked || timeOutReached) return;
+
+            const x = Math.random() * (window.innerWidth - text.offsetWidth);
+            const y = Math.random() * (window.innerHeight - text.offsetHeight - 200);  // 200 для уникнення перекриття з реєстрацією
+
+            text.style.left = `${x}px`;
+            text.style.top = `${y}px`;
+        }
+
+        // Додаємо слухач для події наведеного курсору
+        text.addEventListener('mouseover', moveText);
+
+        // Встановлюємо ліміт часу на 30 секунд
+        setTimeout(() => {
+            timeOutReached = true;
+        }, 900000); // переміщення тексту тільки протягом 30 секунд
+
+        // Подія на натискання
+        text.addEventListener('click', function() {
+            if (!isClicked && timeOutReached) {
+                isClicked = true;
+                window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Рікрол
+            }
+        });
+    </script>
+
+</body>
+</html>
